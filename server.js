@@ -1,6 +1,7 @@
 // Require node modules
 var express = require('express'),
-    morgan = require('morgan');
+    morgan = require('morgan'),
+    cookieParser = require('cookie-parser');
 
 // Set port and localhost
 var hostname = 'localhost',
@@ -9,26 +10,38 @@ var hostname = 'localhost',
 var app = express();
 // Use morgan
 app.use(morgan('dev'));
+app.use(cookieParser('12345-67890-09876-54321')); // Secret key
 
 function auth(req, res, next) {
   console.log(req.headers);
-  var authHeader = req.headers.authorization;
-  if (!authHeader) {
-    var err = new Error('You are not authenticated!');
-    err.status = 401;
-    next(err);
-    return;
-  }
 
-  var auth = new Buffer(authHeader.split(' ')[1], 'base64').toString().split(':');
-  var user = auth[0];
-  var pass = auth[1];
-  if (user == 'admin' && pass == 'password') {
-    next(); // Authorized
+  if (!req.signedCookies.user) {
+    var authHeader = req.headers.authorization;
+    if (!authHeader) {
+      var err = new Error('You are not authenticated!');
+      err.status = 401;
+      next(err);
+      return;
+    }
+
+    var auth = new Buffer(authHeader.split(' ')[1], 'base64').toString().split(':');
+    var user = auth[0];
+    var pass = auth[1];
+    if (user == 'admin' && pass == 'password') {
+      next(); // Authorized
+    } else {
+      var err = new Error('You are not authenticated!');
+      err.status = 401;
+      next(err);
+    }
   } else {
-    var err = new Error('You are not authenticated!');
-    err.status = 401;
-    next(err);
+    if (req.signedCookies.user === 'admin') {
+      next();
+    } else {
+      var err = new Error('You are not authenticated!');
+      err.status = 401;
+      next(err);
+    }
   }
 }
 
