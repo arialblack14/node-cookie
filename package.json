@@ -1,7 +1,7 @@
 {
-  "name": "node-express",
+  "name": "node-cookie",
   "version": "0.1.0",
-  "description": "Just a simple node-express http server",
+  "description": "Using cookies to authenticate users on a nodejs server",
   "main": "server-1.js",
   "dependencies": {
     "body-parser": "^1.15.0",
@@ -15,17 +15,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arialblack14/node-express.git"
+    "url": "git+https://github.com/arialblack14/node-cookie.git"
   },
   "keywords": [
     "node",
     "express",
+    "cookie",
     "server"
   ],
   "author": "Alex Tsiras",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/arialblack14/node-express/issues"
+    "url": "https://github.com/arialblack14/node-cookie/issues"
   },
-  "homepage": "https://github.com/arialblack14/node-express#readme"
+  "homepage": "https://github.com/arialblack14/node-cookie#readme"
 }
