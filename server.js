@@ -28,6 +28,7 @@ function auth(req, res, next) {
     var user = auth[0];
     var pass = auth[1];
     if (user == 'admin' && pass == 'password') {
+      res.cookie('user', 'admin', { signed: true });
       next(); // Authorized
     } else {
       var err = new Error('You are not authenticated!');
